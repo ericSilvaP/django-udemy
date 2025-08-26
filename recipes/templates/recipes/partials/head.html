@@ -88,6 +88,7 @@
 
       body {
         font-size: 1.6rem;
+        background: var(--color-gray-1);
       }
 
       h1,
@@ -120,6 +121,44 @@
         width: fit-content;
         margin: 0 auto;
         gap: 2rem;
+      }
+
+      .search-button,
+      .search-input {
+        border: none;
+        background: none;
+        outline: none;
+        padding: 1rem;
+        transition: all 300ms ease-in-out;
+      }
+
+      .search-input {
+        width: 100%;
+        padding-right: 3rem;
+      }
+
+      .search-button {
+        right: 0;
+        top: 0;
+        position: absolute;
+      }
+
+      .search-form {
+        position: relative;
+        border: var(--color-primary-dark) 0.2rem solid;
+        margin: 0 auto;
+        max-width: 64rem;
+        border-radius: 0.4rem;
+        transition: all 300ms ease-in-out;
+      }
+
+      .search-form:focus-within {
+        border-color: var(--color-primary);
+        background-color: var(--color-white);
+      }
+
+      .search-form:focus-within .search-button {
+        color: var(--color-primary);
       }
     </style>
   </head>
