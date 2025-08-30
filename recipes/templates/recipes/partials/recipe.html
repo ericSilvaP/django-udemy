@@ -39,6 +39,8 @@
             <div class="recipe-meta-text">{{ recipe.servings }} {{ recipe.servings_unit }}</div>
         </div>
     </div>
+
+    {% if not is_detail %}
     <footer class="recipe-footer">
         <a class="recipe-read-more button button-dark button-full-width"
            href="/recipes/3/">
@@ -46,4 +48,10 @@
             <span>ver mais...</span>
         </a>
     </footer>
+    {% else %}
+    <div class="preparation-steps">
+        {{ recipe.preparation_steps|linebreaksbr }}
+    </div>
+    {% endif %}
+
 </div>
