@@ -16,8 +16,10 @@
             <i class="fas fa-user"></i>
             {% if recipe.author.first_name %}
                 {{ recipe.author.first_name }} {{ recipe.author.last_name }}
-            {% else %}
+            {% elif recipe.author %}
                 {{ recipe.author }}
+            {% else %}
+                Desconhecido
             {% endif %}
         </span>
         <span class="recipe-author-item">
