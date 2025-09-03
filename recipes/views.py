@@ -15,8 +15,11 @@ def category(request, category_id):
     recipes = Recipe.objects.filter(
         category__id=category_id, is_published=True
     ).order_by("-id")
-    context = {"recipes": recipes}
-    return render(request, "recipes/pages/home.html", context)
+    context = {
+        "recipes": recipes,
+        "title": f"{recipes.first().category.name} - Category |",
+    }
+    return render(request, "recipes/pages/category.html", context)
 
 
 def recipe(request, id):
