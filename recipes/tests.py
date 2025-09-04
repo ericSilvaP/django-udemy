@@ -1,7 +1,8 @@
 from django.test import TestCase
+from django.urls import reverse
 
 
 class RecipeURLsTest(TestCase):
-    def test_django_pytest_is_ok(self):
-        print("UwU")
-        assert 1 == 1
+    def test_recipe_home_url_is_ok(self):
+        home_url = reverse("recipes:home")
+        assert home_url == "/"
