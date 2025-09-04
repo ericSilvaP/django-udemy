@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from utils.recipes.factory import make_recipe
 from .models import Recipe, Category
@@ -33,9 +33,10 @@ def category(request, category_id):
 
 
 def recipe(request, id):
-    recipe = Recipe.objects.get(id=id)
+    recipe = get_object_or_404(Recipe, id=id)
     context = {
         "recipe": recipe,
         "is_detail": True,
     }
+
     return render(request, "recipes/pages/recipe-view.html", context)
