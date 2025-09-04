@@ -1,64 +1,76 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "python.analysis.autoImportCompletions": true,
-  "python.analysis.typeCheckingMode": "basic",
-  "python.envFile": "${workspaceFolder}/dotenv_files/.env",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.addMissingImports": "explicit",
-    "source.organizeImports": "explicit"
-  },
-  "editor.indentSize": 4,
-  "prettier.tabWidth": 4,
-  "prettier.useTabs": false,
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
-  "prettier.jsxSingleQuote": false,
-  "prettier.trailingComma": "es5",
-  "prettier.arrowParens": "always",
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.formatOnType": true,
+    "python.languageServer": "Pylance", // ms-python.vscode-pylance
+    "python.testing.unittestEnabled": false, // ms-python.python
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [], // -x to bail
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django",
+        "--errors-only"
+    ],
+    "python.formatting.autopep8Args": ["--indent-size=4"],
+    "python.defaultInterpreterPath": "venv/bin/python",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.envFile": "${workspaceFolder}/dotenv_files/.env",
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
-    }
-  },
-  "[django-html]": {
-    "editor.defaultFormatter": "monosans.djlint"
-  },
-  "[django-txt]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "emmet.includeLanguages": { "django-html": "html" },
-  "files.exclude": {
-    "**/__pycache__": true,
-    "**/*.pyc": true,
-    "**/migrations": false
-  },
-  "search.exclude": {
-    "**/__pycache__": true,
-    "**/*.pyc": true,
-    "**/migrations": true
-  },
-  "files.associations": {
-    "*.js": "javascript",
-    "*.jsx": "javascriptreact",
-    "*.xml": "html",
-    "*.svg": "html",
-    "*.html": "html",
-    "django-html": "html",
-    "**/*.html": "html",
-    "**/templates/**/*.html": "django-html",
-    "**/base_templates/**/*.html": "django-html",
-    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
-  },
-  "djlint.showInstallError": false,
-  "djlint.ignore": "H030,H031" // comment if in production
+        "source.fixAll.eslint": "explicit",
+        "source.addMissingImports": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "editor.indentSize": 4,
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": false,
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "prettier.jsxSingleQuote": false,
+    "prettier.trailingComma": "es5",
+    "prettier.arrowParens": "always",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "[django-html]": {
+        "editor.defaultFormatter": "monosans.djlint"
+    },
+    "[django-txt]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "emmet.includeLanguages": { "django-html": "html" },
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/migrations": false
+    },
+    "search.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/migrations": true
+    },
+    "files.associations": {
+        "*.js": "javascript",
+        "*.jsx": "javascriptreact",
+        "*.xml": "html",
+        "*.svg": "html",
+        "*.html": "html",
+        "django-html": "html",
+        "**/*.html": "html",
+        "**/templates/**/*.html": "django-html",
+        "**/base_templates/**/*.html": "django-html",
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    },
+    "djlint.showInstallError": false,
+    "djlint.ignore": "H030,H031" // comment if in production
 }
