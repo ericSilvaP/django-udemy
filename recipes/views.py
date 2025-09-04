@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from utils.recipes.factory import make_recipe
 from .models import Recipe, Category
@@ -13,17 +13,17 @@ def home(request):
 
 
 def category(request, category_id):
-    recipes = Recipe.objects.filter(
-        category__id=category_id, is_published=True
-    ).order_by("-id")
-
-    if not recipes:
-        return HttpResponse(content="Not Found", status=404)
-        # raise Http404("Not Found :(")
-
-    category_name = getattr(
-        getattr(recipes.first(), "category", None), "name", "Not Found"
+    recipes = get_list_or_404(
+        Recipe.objects.filter(category__id=category_id, is_published=True).order_by(
+            "-id"
+        )
     )
+
+    # if not recipes:
+    #     return HttpResponse(content="Not Found", status=404)
+    # raise Http404("Not Found :(")
+
+    category_name = getattr(recipes[0].category, "name")
 
     context = {
         "recipes": recipes,
