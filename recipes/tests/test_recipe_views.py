@@ -1,3 +1,4 @@
+from urllib import response
 from django.test import TestCase
 from django.urls import reverse, resolve
 
@@ -24,3 +25,7 @@ class RecipeViewsTest(TestCase):
     def test_recipes_home_view_loads_correct_template(self):
         response = self.client.get(reverse("recipes:home"))
         self.assertTemplateUsed(response, "recipes/pages/home.html")
+
+    def test_recipes_home_view_shows_not_found_message_without_recipes_in_db(self):
+        response = self.client.get(reverse("recipes:home"))
+        self.assertIn("Não há receitas", response.content.decode())
