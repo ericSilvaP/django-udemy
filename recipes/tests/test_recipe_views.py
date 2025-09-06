@@ -30,14 +30,30 @@ class RecipeViewsTest(RecipeTestBase):
 
         self.assertIn("Recipe title", content)
 
+    def test_recipes_home_template_dont_load_unpublished_recipe(self):
+        self.make_recipe(is_published=False)
+
+        response = self.client.get(reverse("recipes:home"))
+        content = response.content.decode()
+
+        self.assertIn("Não há receitas", content)
+
     # category
     def test_recipes_category_view_is_ok(self):
-        view = resolve(reverse("recipes:category", kwargs={"category_id": 1000}))
+        view = resolve(
+            reverse(
+                "recipes:category",
+                kwargs={"category_id": 1000},
+            )
+        )
         assert view.func is views.category
 
     def test_recipes_category_view_404_without_if_no_recipes_found(self):
         response = self.client.get(
-            reverse("recipes:category", kwargs={"category_id": 1000})
+            reverse(
+                "recipes:category",
+                kwargs={"category_id": 1000},
+            )
         )
         assert response.status_code == 404
 
@@ -47,11 +63,26 @@ class RecipeViewsTest(RecipeTestBase):
         self.make_recipe(title=needed_title)
 
         response = self.client.get(
-            reverse("recipes:category", kwargs={"category_id": 1})
+            reverse(
+                "recipes:category",
+                kwargs={"category_id": 1},
+            )
         )
         content = response.content.decode()
 
         self.assertIn(needed_title, content)
+
+    def test_recipes_category_template_dont_load_unpublished_recipe(self):
+        recipe = self.make_recipe(is_published=False)
+
+        response = self.client.get(
+            reverse(
+                "recipes:category",
+                kwargs={"category_id": getattr(recipe.category, "id")},
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
 
     # recipe
     def test_recipes_recipe_view_is_ok(self):
@@ -59,7 +90,12 @@ class RecipeViewsTest(RecipeTestBase):
         assert view.func is views.recipe
 
     def test_recipes_recipe_view_404_without_if_no_recipe_found(self):
-        response = self.client.get(reverse("recipes:recipe", kwargs={"id": 1000}))
+        response = self.client.get(
+            reverse(
+                "recipes:recipe",
+                kwargs={"id": 1000},
+            )
+        )
         assert response.status_code == 404
 
     def test_recipes_recipe_template_loads_recipes(self):
@@ -67,7 +103,24 @@ class RecipeViewsTest(RecipeTestBase):
 
         self.make_recipe(title=needed_title)
 
-        response = self.client.get(reverse("recipes:recipe", kwargs={"id": 1}))
+        response = self.client.get(
+            reverse(
+                "recipes:recipe",
+                kwargs={"id": 1},
+            )
+        )
         content = response.content.decode()
 
         self.assertIn(needed_title, content)
+
+    def test_recipes_recipe_template_dont_load_unpublished_recipe(self):
+        recipe = self.make_recipe(is_published=False)
+
+        response = self.client.get(
+            reverse(
+                "recipes:recipe",
+                kwargs={"id": getattr(recipe, "id")},
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
