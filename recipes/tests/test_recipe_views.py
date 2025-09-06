@@ -1,11 +1,10 @@
-from django.test import TestCase
 from django.urls import reverse, resolve
-from recipes.models import Recipe, Category, User
 
 from recipes import views
+from .test_recipe_base import RecipeTestBase
 
 
-class RecipeViewsTest(TestCase):
+class RecipeViewsTest(RecipeTestBase):
     # home
     def test_recipes_home_view_is_ok(self):
         view = resolve(reverse("recipes:home"))
@@ -24,33 +23,13 @@ class RecipeViewsTest(TestCase):
         self.assertIn("Não há receitas", response.content.decode())
 
     def test_recipes_home_template_loads_recipes(self):
-        category = Category.objects.create(name="Category")
-        author = User.objects.create_user(
-            first_name="John",
-            last_name="Potato",
-            username="john_potato",
-            email="john@potato.com",
-        )
-        recipe = Recipe.objects.create(
-            category=category,
-            author=author,
-            title="Recipe title",
-            description="Recipe Description",
-            slug="recipe-slug",
-            preparation_time=10,
-            preparation_time_unit="Minutos",
-            servings=5,
-            servings_unit="Porções",
-            preparation_steps="Forma de Preparo da Receita",
-            preparation_steps_is_html=False,
-            is_published=True,
-        )
+        self.make_recipe()
 
         response = self.client.get(reverse("recipes:home"))
         content = response.content.decode()
         recipes_context = response.context["recipes"]
 
-        self.assertIn(recipe.title, content)
+        self.assertIn("Recipe title", content)
         self.assertEqual(len(recipes_context), 1)
 
     # category
