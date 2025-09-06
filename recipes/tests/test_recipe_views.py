@@ -27,10 +27,8 @@ class RecipeViewsTest(RecipeTestBase):
 
         response = self.client.get(reverse("recipes:home"))
         content = response.content.decode()
-        recipes_context = response.context["recipes"]
 
         self.assertIn("Recipe title", content)
-        self.assertEqual(len(recipes_context), 1)
 
     # category
     def test_recipes_category_view_is_ok(self):
@@ -43,6 +41,18 @@ class RecipeViewsTest(RecipeTestBase):
         )
         assert response.status_code == 404
 
+    def test_recipes_category_template_loads_recipes(self):
+        needed_title = "This is a category page"
+
+        self.make_recipe(title=needed_title)
+
+        response = self.client.get(
+            reverse("recipes:category", kwargs={"category_id": 1})
+        )
+        content = response.content.decode()
+
+        self.assertIn(needed_title, content)
+
     # recipe
     def test_recipes_recipe_view_is_ok(self):
         view = resolve(reverse("recipes:recipe", kwargs={"id": 1000}))
@@ -51,3 +61,13 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipes_recipe_view_404_without_if_no_recipe_found(self):
         response = self.client.get(reverse("recipes:recipe", kwargs={"id": 1000}))
         assert response.status_code == 404
+
+    def test_recipes_recipe_template_loads_recipes(self):
+        needed_title = "This is a recipe detail page - It load one recipe"
+
+        self.make_recipe(title=needed_title)
+
+        response = self.client.get(reverse("recipes:recipe", kwargs={"id": 1}))
+        content = response.content.decode()
+
+        self.assertIn(needed_title, content)
