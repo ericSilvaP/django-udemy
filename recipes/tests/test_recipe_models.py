@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from parameterized import parameterized
 from .test_recipe_base import RecipeTestBase
 
 
@@ -7,9 +8,16 @@ class RecipeModelTest(RecipeTestBase):
         self.recipe = self.make_recipe()
         return super().setUp()
 
-    def test_recipe_model_recipe_title_raises_error_title_more_65_chars(self):
-        max_chars_value = 65
-        self.recipe.title = "a" * (max_chars_value + 1)
+    @parameterized.expand(
+        [
+            ("title", 65),
+            ("description", 165),
+            ("preparation_time_unit", 65),
+            ("servings_unit", 65),
+        ]
+    )
+    def test_recipe_model_fields_max_length(self, field, max_length):
+        setattr(self.recipe, field, "a" * (max_length + 1))
 
         with self.assertRaises(ValidationError):
             self.recipe.full_clean()
