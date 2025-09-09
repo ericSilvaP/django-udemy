@@ -39,10 +39,17 @@ class RecipeModelTest(RecipeTestBase):
         with self.assertRaises(ValidationError):
             self.recipe.full_clean()
 
-    def test_recipe_model_preparation_steps_is_html_is_false_by_default(self):
+    def test_recipe_model_preparation_steps_is_html_field_is_false_by_default(self):
         recipe = self.make_recipe_no_default()
         self.assertFalse(recipe.preparation_steps_is_html)
 
-    def test_recipe_model_is_published_is_false_by_default(self):
+    def test_recipe_model_is_published_field_is_false_by_default(self):
         recipe = self.make_recipe_no_default()
         self.assertFalse(recipe.is_published)
+
+    def test_recipe_model_string_representation(self):
+        title = "String Representation"
+        self.recipe.title = title
+        self.recipe.full_clean()
+        self.recipe.save()
+        self.assertEqual(str(self.recipe), title)
