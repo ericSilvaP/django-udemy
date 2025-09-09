@@ -60,3 +60,10 @@ class CategoryModelTest(TestCase):
 
     def test_category_model_string_representation(self):
         self.assertEqual(str(self.category), self.category.name)
+
+    def test_category_model_name_max_lenght(self):
+        max_length = 65
+        self.category.name = "a" * (max_length + 1)
+
+        with self.assertRaises(ValidationError):
+            self.category.full_clean()
