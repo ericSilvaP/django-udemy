@@ -142,3 +142,10 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipes_search_raises_404_if_only_spaces_in_search_term(self):
         response = self.client.get(f"{reverse("recipes:search")}?q=+")
         self.assertEqual(response.status_code, 404)
+
+    def test_recipes_search_search_term_is_on_title_and_escaped(self):
+        response = self.client.get(f"{reverse("recipes:search")}?q=<test>")
+        self.assertIn(
+            "Pesquisa por &lt;test&gt; |",
+            response.content.decode(),
+        )
