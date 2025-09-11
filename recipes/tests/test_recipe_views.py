@@ -1,3 +1,4 @@
+from urllib import response
 from django.urls import reverse, resolve
 
 from recipes import views
@@ -133,3 +134,11 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipes_search_template_loads_recipes(self):
         response = self.client.get(reverse("recipes:search"))
         self.assertTemplateUsed(response, "recipes/pages/search.html")
+
+    def test_recipes_search_raises_404_if_no_search_term(self):
+        response = self.client.get(reverse("recipes:search"))
+        self.assertEqual(response.status_code, 404)
+
+    def test_recipes_search_raises_404_if_only_spaces_in_search_term(self):
+        response = self.client.get(f"{reverse("recipes:search")}?q=+")
+        self.assertEqual(response.status_code, 404)
