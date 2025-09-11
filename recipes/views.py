@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from .models import Recipe
@@ -39,3 +40,6 @@ def recipe(request, id):
     }
 
     return render(request, "recipes/pages/recipe-view.html", context)
+
+
+def search(request): ...
