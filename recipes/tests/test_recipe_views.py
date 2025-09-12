@@ -149,3 +149,73 @@ class RecipeViewsTest(RecipeTestBase):
             "Pesquisa por &lt;test&gt; |",
             response.content.decode(),
         )
+
+    def test_recipes_search_search_correct_recipes_by_title(self):
+        # testar pesquisa por duas receitas individualmente, testar se titulo renderiza no template, testar pesquisa por ambas
+
+        title1 = "This is title for Recipe 01"
+        title2 = "This is title for Recipe 02"
+
+        recipe1 = self.make_recipe(
+            title=title1, slug="recipe-test-01", author_data={"username": "one"}
+        )
+        recipe2 = self.make_recipe(
+            title=title2, slug="recipe-test-02", author_data={"username": "two"}
+        )
+
+        url_search_path = reverse("recipes:search")
+        response1 = self.client.get(f"{url_search_path}?q={title1}")
+        response2 = self.client.get(f"{url_search_path}?q={title2}")
+        response_both = self.client.get(f"{url_search_path}?q=this")
+
+        self.assertIn(recipe1, response1.context["recipes"])
+        self.assertNotIn(recipe2, response1.context["recipes"])
+        self.assertIn(title1, response1.content.decode())
+        self.assertNotIn(title2, response1.content.decode())
+
+        self.assertIn(recipe2, response2.context["recipes"])
+        self.assertNotIn(recipe1, response2.context["recipes"])
+        self.assertIn(title2, response2.content.decode())
+        self.assertNotIn(title1, response2.content.decode())
+
+        self.assertIn(recipe1, response_both.context["recipes"])
+        self.assertIn(recipe2, response_both.context["recipes"])
+        self.assertIn(title1, response_both.content.decode())
+        self.assertIn(title2, response_both.content.decode())
+
+    def test_recipes_search_search_correct_recipes_by_description(self):
+        # testar pesquisa por duas receitas individualmente, testar se descrição renderiza no template, testar pesquisa por ambas
+
+        description_1 = "This is preparation steps for Recipe 01"
+        desciption_2 = "This is preparation steps for Recipe 02"
+
+        recipe1 = self.make_recipe(
+            description=description_1,
+            slug="recipe-test-01",
+            author_data={"username": "one"},
+        )
+        recipe2 = self.make_recipe(
+            description=desciption_2,
+            slug="recipe-test-02",
+            author_data={"username": "two"},
+        )
+
+        url_search_path = reverse("recipes:search")
+        response1 = self.client.get(f"{url_search_path}?q={description_1}")
+        response2 = self.client.get(f"{url_search_path}?q={desciption_2}")
+        response_both = self.client.get(f"{url_search_path}?q=this")
+
+        self.assertIn(recipe1, response1.context["recipes"])
+        self.assertNotIn(recipe2, response1.context["recipes"])
+        self.assertIn(description_1, response1.content.decode())
+        self.assertNotIn(desciption_2, response1.content.decode())
+
+        self.assertIn(recipe2, response2.context["recipes"])
+        self.assertNotIn(recipe1, response2.context["recipes"])
+        self.assertIn(desciption_2, response2.content.decode())
+        self.assertNotIn(description_1, response2.content.decode())
+
+        self.assertIn(recipe1, response_both.context["recipes"])
+        self.assertIn(recipe2, response_both.context["recipes"])
+        self.assertIn(description_1, response_both.content.decode())
+        self.assertIn(desciption_2, response_both.content.decode())
