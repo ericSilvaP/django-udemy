@@ -293,3 +293,34 @@ h6 {
     margin: auto;
     text-align: center;
 }
+
+.pagination .pagination-content {
+    display: flex;
+    gap: 1rem 0.5rem;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+.pagination .page-item {
+    background-color: var(--color-gray-3);
+    padding: 0.5rem 1rem;
+}
+
+.pagination .page-link {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    text-decoration: none;
+    transition: all ease-in-out 200ms;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.pagination .page-current {
+    background-color: var(--color-primary-dark);
+}
+
+.pagination .page-current:hover {
+    background-color: var(--color-primary-dark-hover);
+}
