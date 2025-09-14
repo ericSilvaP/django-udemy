@@ -1,4 +1,6 @@
 from math import ceil
+from django.core.paginator import Paginator
+from django.http import HttpRequest
 
 
 def make_pagination_range(
@@ -33,3 +35,18 @@ def make_pagination_range(
         "first_page_out_of_range": current_page > middle,
         "last_page_out_of_range": current_page + middle < total_pages,
     }
+
+
+def make_pagination(request: HttpRequest, obj, per_page, pages_qty=4):
+    try:
+        current_page = int(request.GET.get("page", 1))
+    except ValueError:
+        current_page = 1
+
+    paginator = Paginator(obj, per_page)
+    page_obj = paginator.get_page(current_page)
+
+    pagination_range = make_pagination_range(
+        paginator.page_range, pages_qty, current_page
+    )
+    return (page_obj, pagination_range)
