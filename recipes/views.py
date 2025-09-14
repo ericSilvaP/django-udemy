@@ -28,15 +28,14 @@ def category(request, category_id):
         ).order_by("-id")
     )
 
-    # if not recipes:
-    #     return HttpResponse(content="Not Found", status=404)
-    # raise Http404("Not Found :(")
-
     category_name = getattr(recipes[0].category, "name")
 
+    page_obj, pagination_range = make_pagination(request, recipes, 9)
+
     context = {
-        "recipes": recipes,
+        "recipes": page_obj,
         "title": f"{category_name} - Category |",
+        "pagination_range": pagination_range,
     }
     return render(request, "recipes/pages/category.html", context)
 
@@ -61,11 +60,14 @@ def search(request):
         Q(Q(title__icontains=search_term) | Q(description__icontains=search_term)),
         is_published=True,
     )
+    page_obj, pagination_range = make_pagination(request, recipes, 9)
 
     context = {
         "title": f"Pesquisa por {search_term} |",
         "search_term": search_term,
-        "recipes": recipes,
+        "recipes": page_obj,
+        "pagination_range": pagination_range,
+        "additional_query_string": f"&q={search_term}",
     }
 
     return render(request, "recipes/pages/search.html", context)
