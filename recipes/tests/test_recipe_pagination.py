@@ -1,7 +1,8 @@
 from django.urls import reverse
 
-from recipes.models import Recipe
+from recipes.models import Category, Recipe
 from recipes.tests.test_recipe_base import RecipeTestBase
+from unittest.mock import patch
 
 
 class RecipePaginationTest(RecipeTestBase):
@@ -19,48 +20,42 @@ class RecipePaginationTest(RecipeTestBase):
         return super().setUp()
 
     def test_home_page_has_correct_pagination(self):
-        # page 1
-        response = self.client.get(reverse("recipes:home"))
-        page = response.context["recipes"]
+        with patch("recipes.views.PER_PAGE", new=9):
 
-        self.assertEqual(len(page), 9)
+            # page 1
+            response = self.client.get(reverse("recipes:home"))
+            page = response.context["recipes"]
 
-        # page 2
-        response = self.client.get(reverse("recipes:home") + "?page=2")
-        page = response.context["recipes"]
+            paginator = page.paginator
 
-        self.assertEqual(len(page), 9)
+            self.assertEqual(paginator.num_pages, 3)
+            self.assertEqual(len(paginator.get_page(1)), 9)
+            self.assertEqual(len(paginator.get_page(2)), 9)
+            self.assertEqual(len(paginator.get_page(3)), 2)
 
-        # page 3
-        response = self.client.get(reverse("recipes:home") + "?page=3")
-        page = response.context["recipes"]
-
-        self.assertEqual(len(page), 2)
-
-    def test_category_page_has_correct_pagination(self):
-        # page 1
+    def test_category_page_returns_expected_number_of_items(self):
+        recipe = self.make_recipe()
         response = self.client.get(
-            reverse("recipes:category", kwargs={"category_id": 1})
+            reverse(
+                "recipes:category",
+                kwargs={"category_id": getattr(recipe.category, "id")},
+            )
         )
+
         page = response.context["recipes"]
 
         self.assertEqual(len(page), 1)
 
+    # @patch("recipes.views.PER_PAGE", new=9)
     def test_search_page_has_correct_pagination(self):
-        # page 1
-        response = self.client.get(reverse("recipes:search") + "?q=e")
-        page = response.context["recipes"]
+        with patch("recipes.views.PER_PAGE", new=9):
+            # page 1
+            response = self.client.get(reverse("recipes:search") + "?q=e")
+            page = response.context["recipes"]
 
-        self.assertEqual(len(page), 9)
+            paginator = page.paginator
 
-        # page 2
-        response = self.client.get(reverse("recipes:search") + "?page=2&q=e")
-        page = response.context["recipes"]
-
-        self.assertEqual(len(page), 9)
-
-        # page 3
-        response = self.client.get(reverse("recipes:search") + "?page=3&q=e")
-        page = response.context["recipes"]
-
-        self.assertEqual(len(page), 2)
+            self.assertEqual(paginator.num_pages, 3)
+            self.assertEqual(len(paginator.get_page(1)), 9)
+            self.assertEqual(len(paginator.get_page(2)), 9)
+            self.assertEqual(len(paginator.get_page(3)), 2)

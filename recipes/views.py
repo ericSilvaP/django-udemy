@@ -62,7 +62,7 @@ def search(request):
     recipes = Recipe.objects.filter(
         Q(Q(title__icontains=search_term) | Q(description__icontains=search_term)),
         is_published=True,
-    )
+    ).order_by("-id")
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
     context = {
