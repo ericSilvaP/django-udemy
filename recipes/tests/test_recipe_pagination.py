@@ -1,6 +1,5 @@
 from django.urls import reverse
 
-from recipes.models import Category, Recipe
 from recipes.tests.test_recipe_base import RecipeTestBase
 from unittest.mock import patch
 

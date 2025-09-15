@@ -1,4 +1,3 @@
-from urllib import response
 from django.urls import reverse, resolve
 
 from recipes import views
