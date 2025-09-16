@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
+from .forms import RegisterForm
+
 
 # Create your views here.
 def home(request):
-    return render(request, "authors/pages/authors.html")
+    form = RegisterForm()
+    context = {"form": form}
+    return render(request, "authors/pages/register_view.html", context)
