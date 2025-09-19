@@ -4,8 +4,9 @@
 {% endblock title %}
 {% block content %}
     <div class="container center main-content">
-        <h2>Register - {{ request.session.number }}</h2>
+        <h2>Register</h2>
     </div>
+    {% include 'recipes/partials/messages.html' %}
     <div class="main-content container">
         <form action="{% url 'authors:create' %}" method="POST">
             {% csrf_token %}
@@ -14,7 +15,7 @@
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                         {{ field }}
-                        {% if field.help_text %}<p class="help_text">{{ fiesld.help_text }}</p>{% endif %}
+                        {% if field.help_text %}<p class="help-text">{{ field.help_text }}</p>{% endif %}
                         {{ field.errors }}
                     </div>
                 {% endfor %}

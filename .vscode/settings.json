@@ -68,7 +68,7 @@
         "django-html": "html",
         "**/*.html": "html",
         "**/templates/**/*.html": "django-html",
-        "**/base_templates/**/*.html": "django-html",
+        "**/global_templates/**/*.html": "django-html",
         "**/requirements{/**,*}.{txt,in}": "pip-requirements"
     },
     "djlint.showInstallError": false,

@@ -48,13 +48,15 @@ class RegisterForm(forms.ModelForm):
                 "Senha fraca", code="invalid", params={"value": password}
             )
 
-    def clean(self):
-        data = super().clean()
+        return password
 
-        password = data.get("password")
-        password_repeat = data.get("password_repeat")
+    def clean(self):
+        cleaned_data = super().clean()
+
+        password = cleaned_data.get("password")
+        password_repeat = cleaned_data.get("password_repeat")
 
         if password != password_repeat:
             raise forms.ValidationError("Passwords must be equals")
 
-        return data
+        return cleaned_data
