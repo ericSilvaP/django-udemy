@@ -39,3 +39,22 @@ class RegisterForm(forms.ModelForm):
     password_repeat = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "Repeat your Password"})
     )
+
+    # validations
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        if "1234" in str(password):
+            raise forms.ValidationError(
+                "Senha fraca", code="invalid", params={"value": password}
+            )
+
+    def clean(self):
+        data = super().clean()
+
+        password = data.get("password")
+        password_repeat = data.get("password_repeat")
+
+        if password != password_repeat:
+            raise forms.ValidationError("Passwords must be equals")
+
+        return data
