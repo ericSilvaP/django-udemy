@@ -1,10 +1,11 @@
+from django.urls import reverse
 from django.test import TestCase
 from parameterized import parameterized
 
 from authors.forms import RegisterForm
 
 
-class AuthorsRegisterFormTestUnitTest(TestCase):
+class AuthorsRegisterFormUnitTest(TestCase):
 
     # ("field", "placeholder_content")
     @parameterized.expand(
@@ -41,3 +42,35 @@ class AuthorsRegisterFormTestUnitTest(TestCase):
     def test_label_is_ok(self, field_name, label_test):
         label = RegisterForm().fields[field_name].label
         self.assertEqual(label, label_test)
+
+
+class AuthorsRegisterFormIntegrationTest(TestCase):
+    def setUp(self) -> None:
+        self.form_data = {
+            "first_name": "first_name_example",
+            "last_name": "last_name_example",
+            "username": "user_ex",
+            "email": "email@example.com",
+            "password": "Exemplo9080",
+            "password_repeat": "Exemplo9080",
+        }
+
+        return super().setUp()
+
+    @parameterized.expand(
+        [
+            ("first_name", "Write your first name"),
+            ("last_name", "Write your last name"),
+            ("username", "Write your username"),
+            ("email", "Write your e-mail"),
+            ("password", "Password must not be empty"),
+            ("password_repeat", "Please, repeat your password"),
+        ]
+    )
+    def test_fields_cannot_be_empty(self, field_name, error_message):
+        self.form_data[field_name] = ""
+        url = reverse("authors:create")
+        response = self.client.post(url, data=self.form_data, follow=True)
+
+        self.assertIn(error_message, response.content.decode())
+        self.assertIn(error_message, response.context["form"].errors.get(field_name))

@@ -2,13 +2,13 @@ from django import forms
 from django.contrib.auth.models import User
 
 
-def add_attr(field, attr_name, attr_new_val):
+def add_widget_attr(field, attr_name, attr_new_val):
     existing = field.widget.attrs.get(attr_name, "")
     field.widget.attrs[attr_name] = f"{existing} {attr_new_val}".strip()
 
 
 def add_placeholder(field, placeholder_val):
-    add_attr(field, "placeholder", placeholder_val)
+    add_widget_attr(field, "placeholder", placeholder_val)
 
 
 class RegisterForm(forms.ModelForm):
@@ -21,23 +21,9 @@ class RegisterForm(forms.ModelForm):
             "email",
             "password",
         ]
-        labels = {
-            "first_name": "First Name",
-            "last_name": "Last Name",
-            "username": "Username",
-            "email": "E-mail",
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        add_placeholder(self.fields["username"], "Your username")
-        add_placeholder(self.fields["email"], "Your e-mail")
-        add_placeholder(self.fields["first_name"], "Ex.: John")
-        add_placeholder(self.fields["last_name"], "Ex.: Doe")
-        add_attr(self.fields["username"], "css", "a-css-class")
 
     password = forms.CharField(
-        error_messages={"required": "Password can't be empty"},
+        error_messages={"required": "Password must not be empty"},
         help_text="Password must have at least: one uppercase letter, one lowercase letter and one number. Lenght: minimum 8 characters",
         widget=forms.PasswordInput(
             attrs={"placeholder": "Enter your password"},
@@ -46,24 +32,46 @@ class RegisterForm(forms.ModelForm):
     )
 
     password_repeat = forms.CharField(
+        error_messages={"required": "Please, repeat your password"},
         widget=forms.PasswordInput(
             attrs={"placeholder": "Repeat your password"},
         ),
         label="Repeat Password",
     )
 
+    first_name = forms.CharField(
+        error_messages={"required": "Write your first name"},
+        widget=forms.TextInput(
+            attrs={"placeholder": "Ex.: John"},
+        ),
+        label="First Name",
+    )
+
+    last_name = forms.CharField(
+        error_messages={"required": "Write your last name"},
+        widget=forms.TextInput(
+            attrs={"placeholder": "Ex.: Doe"},
+        ),
+        label="Last Name",
+    )
+
+    username = forms.CharField(
+        error_messages={"required": "Write your username"},
+        widget=forms.TextInput(
+            attrs={"placeholder": "Your username"},
+        ),
+        label="Username",
+    )
+
+    email = forms.CharField(
+        error_messages={"required": "Write your e-mail"},
+        widget=forms.TextInput(
+            attrs={"placeholder": "Your e-mail"},
+        ),
+        label="E-mail",
+    )
+
     # validations
-    def clean_password(self):
-        password = self.cleaned_data.get("password")
-        if "1234" in str(password):
-            raise forms.ValidationError(
-                "Senha fraca",
-                code="invalid",
-                params={"value": password},
-            )
-
-        return password
-
     def clean(self):
         cleaned_data = super().clean()
 
