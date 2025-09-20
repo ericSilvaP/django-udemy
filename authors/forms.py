@@ -33,11 +33,15 @@ class RegisterForm(forms.ModelForm):
     password = forms.CharField(
         error_messages={"required": "Password can't be empty"},
         help_text="Password must have at least: one uppercase letter, one lowercase letter and one number. Lenght: minimum 8 characters",
-        widget=forms.PasswordInput(attrs={"placeholder": "Enter your password"}),
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "Enter your password"},
+        ),
     )
 
     password_repeat = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Repeat your Password"})
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "Repeat your password"},
+        )
     )
 
     # validations
@@ -45,7 +49,9 @@ class RegisterForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         if "1234" in str(password):
             raise forms.ValidationError(
-                "Senha fraca", code="invalid", params={"value": password}
+                "Senha fraca",
+                code="invalid",
+                params={"value": password},
             )
 
         return password
