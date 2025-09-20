@@ -21,6 +21,12 @@ class RegisterForm(forms.ModelForm):
             "email",
             "password",
         ]
+        labels = {
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "username": "Username",
+            "email": "E-mail",
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -36,12 +42,14 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={"placeholder": "Enter your password"},
         ),
+        label="Password",
     )
 
     password_repeat = forms.CharField(
         widget=forms.PasswordInput(
             attrs={"placeholder": "Repeat your password"},
-        )
+        ),
+        label="Repeat Password",
     )
 
     # validations
