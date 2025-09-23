@@ -6,7 +6,6 @@ from authors.forms import RegisterForm
 
 
 class AuthorsRegisterFormUnitTest(TestCase):
-
     # ("field", "placeholder_content")
     @parameterized.expand(
         [
@@ -74,3 +73,29 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
 
         self.assertIn(error_message, response.content.decode())
         self.assertIn(error_message, response.context["form"].errors.get(field_name))
+
+    def test_username_field_has_min_length_4(self):
+        self.form_data["username"] = "aaa"
+        url = reverse("authors:create")
+        response = self.client.post(url, follow=True, data=self.form_data)
+
+        self.assertIn(
+            "Username must have at least 4 characters", response.content.decode()
+        )
+        self.assertIn(
+            "Username must have at least 4 characters",
+            response.context["form"].errors.get("username"),
+        )
+
+    def test_username_field_has_max_length_150(self):
+        self.form_data["username"] = "a" * 151
+        url = reverse("authors:create")
+        response = self.client.post(url, follow=True, data=self.form_data)
+
+        self.assertIn(
+            "Username must have less than 151 characters", response.content.decode()
+        )
+        self.assertIn(
+            "Username must have less than 151 characters",
+            response.context["form"].errors.get("username"),
+        )

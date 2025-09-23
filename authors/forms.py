@@ -56,11 +56,17 @@ class RegisterForm(forms.ModelForm):
     )
 
     username = forms.CharField(
-        error_messages={"required": "Write your username"},
+        error_messages={
+            "required": "Write your username",
+            "min_length": "Username must have at least 4 characters",
+            "max_length": "Username must have less than 151 characters",
+        },
         widget=forms.TextInput(
             attrs={"placeholder": "Your username"},
         ),
         label="Username",
+        min_length=4,
+        max_length=150,
     )
 
     email = forms.CharField(
