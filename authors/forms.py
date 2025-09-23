@@ -87,6 +87,14 @@ class RegisterForm(forms.ModelForm):
         password_repeat = cleaned_data.get("password_repeat")
 
         if password != password_repeat:
-            raise forms.ValidationError("Passwords must be equals")
+            password_confirmation_message = forms.ValidationError(
+                "Passwords must be equals"
+            )
+            raise forms.ValidationError(
+                {
+                    "password": password_confirmation_message,
+                    "password_repeat": password_confirmation_message,
+                }
+            )
 
         return cleaned_data

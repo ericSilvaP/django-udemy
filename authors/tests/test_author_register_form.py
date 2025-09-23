@@ -112,3 +112,23 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
             "Username must have less than 151 characters",
             response.context["form"].errors.get("username"),
         )
+
+    def test_password_and_password_repeat_must_be_equals(self):
+        password = "test123test"
+
+        self.form_data["password"] = password
+        self.form_data["password_repeat"] = password + "a"
+        url = reverse("authors:create")
+        response = self.client.post(url, follow=True, data=self.form_data)
+
+        self.assertIn(
+            "Passwords must be equals", response.context["form"].errors.get("password")
+        )
+        self.assertIn("Passwords must be equals", response.content.decode())
+
+        self.form_data["password_repeat"] = password
+        url = reverse("authors:create")
+        response = self.client.post(url, follow=True, data=self.form_data)
+
+        self.assertFalse(response.context["form"].errors.get("password"))
+        self.assertNotIn("Passwords must be equals", response.content.decode())
