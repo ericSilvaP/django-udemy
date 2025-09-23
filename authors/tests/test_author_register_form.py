@@ -21,10 +21,23 @@ class AuthorsRegisterFormUnitTest(TestCase):
         placeholder = RegisterForm().fields[field_name].widget.attrs["placeholder"]
         self.assertEqual(placeholder_content_test, placeholder)
 
-    def test_password_help_text_content_is_ok(self):
-        help_text = RegisterForm()["password"].help_text
+    @parameterized.expand(
+        [
+            (
+                "password",
+                "Password must have at least: one uppercase letter, one lowercase letter and one number. Lenght: minimum 8 characters.",
+            ),
+            (
+                "username",
+                "Username must have letters, numbers or one of those @.+-_. "
+                "The length should be between 4 and 150 characters.",
+            ),
+        ]
+    )
+    def test_password_help_text_content_is_ok(self, field_name, error_message):
+        help_text = RegisterForm()[field_name].help_text
         self.assertEqual(
-            "Password must have at least: one uppercase letter, one lowercase letter and one number. Lenght: minimum 8 characters",
+            error_message,
             help_text,
         )
 

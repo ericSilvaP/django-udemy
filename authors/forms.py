@@ -24,7 +24,7 @@ class RegisterForm(forms.ModelForm):
 
     password = forms.CharField(
         error_messages={"required": "Password must not be empty"},
-        help_text="Password must have at least: one uppercase letter, one lowercase letter and one number. Lenght: minimum 8 characters",
+        help_text="Password must have at least: one uppercase letter, one lowercase letter and one number. Lenght: minimum 8 characters.",
         widget=forms.PasswordInput(
             attrs={"placeholder": "Enter your password"},
         ),
@@ -56,6 +56,8 @@ class RegisterForm(forms.ModelForm):
     )
 
     username = forms.CharField(
+        help_text="Username must have letters, numbers or one of those @.+-_. "
+        "The length should be between 4 and 150 characters.",
         error_messages={
             "required": "Write your username",
             "min_length": "Username must have at least 4 characters",
