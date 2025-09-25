@@ -157,7 +157,7 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
             {
                 "username": "testuser",
                 "password": "@Bc123456",
-                "password2": "@Bc123456",
+                "password_repeat": "@Bc123456",
             }
         )
 
