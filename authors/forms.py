@@ -89,3 +89,12 @@ class RegisterForm(forms.ModelForm):
             )
 
         return cleaned_data
+
+    def clean_email(self):
+        new_email = self.cleaned_data.get("email", "")
+        exists = User.objects.filter(email=new_email).exists()
+
+        if exists:
+            raise forms.ValidationError("Email must be unique.", code="invalid")
+
+        return new_email
