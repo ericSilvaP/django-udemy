@@ -1,3 +1,4 @@
+from django import forms
 from django.urls import reverse
 from django.test import TestCase
 from parameterized import parameterized
@@ -132,3 +133,8 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
 
         self.assertFalse(response.context["form"].errors.get("password"))
         self.assertNotIn("Passwords must be equals", response.content.decode())
+
+    def test_send_get_request_to_registration_create_view_returns_404(self):
+        url = reverse("authors:create")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)

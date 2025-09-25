@@ -38,7 +38,10 @@ def make_pagination_range(
 
 
 def make_pagination(request: HttpRequest, obj, per_page, pages_qty=4):
-    current_page = int(request.GET.get("page", 1))
+    try:
+        current_page = int(request.GET.get("page", 1))
+    except ValueError:
+        current_page = 1
 
     paginator = Paginator(obj, per_page)
     page_obj = paginator.get_page(current_page)
