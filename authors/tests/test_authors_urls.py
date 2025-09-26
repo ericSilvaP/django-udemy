@@ -8,5 +8,5 @@ class AuthorsURLsTest(TestCase):
         self.assertEqual(url, "/authors/register/")
 
     def test_authors_register_create_url_is_ok(self):
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         self.assertEqual(url, "/authors/register/create/")

@@ -82,7 +82,7 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
     )
     def test_fields_cannot_be_empty(self, field_name, error_message):
         self.form_data[field_name] = ""
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         response = self.client.post(url, data=self.form_data, follow=True)
 
         self.assertIn(error_message, response.content.decode())
@@ -90,7 +90,7 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
 
     def test_username_field_has_min_length_4(self):
         self.form_data["username"] = "aaa"
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         response = self.client.post(url, follow=True, data=self.form_data)
 
         self.assertIn(
@@ -103,7 +103,7 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
 
     def test_username_field_has_max_length_150(self):
         self.form_data["username"] = "a" * 151
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         response = self.client.post(url, follow=True, data=self.form_data)
 
         self.assertIn(
@@ -119,7 +119,7 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
 
         self.form_data["password"] = password
         self.form_data["password_repeat"] = password + "a"
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         response = self.client.post(url, follow=True, data=self.form_data)
 
         self.assertIn(
@@ -128,21 +128,21 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
         self.assertIn("Passwords must be equals", response.content.decode())
 
         self.form_data["password_repeat"] = password
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         response = self.client.post(url, follow=True, data=self.form_data)
 
         self.assertFalse(response.context["form"].errors.get("password"))
         self.assertNotIn("Passwords must be equals", response.content.decode())
 
     def test_send_get_request_to_registration_create_view_returns_404(self):
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     def test_email_must_be_unique_message(self):
         test_email = "test_email@email.com"
         self.form_data["email"] = test_email
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
         self.client.post(url, data=self.form_data, follow=True)
 
         response = self.client.post(url, data=self.form_data, follow=True)
@@ -151,7 +151,7 @@ class AuthorsRegisterFormIntegrationTest(TestCase):
         self.assertIn(msg, response.content.decode())
 
     def test_author_created_can_login(self):
-        url = reverse("authors:create")
+        url = reverse("authors:register_create")
 
         self.form_data.update(
             {
