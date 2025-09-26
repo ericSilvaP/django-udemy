@@ -11,3 +11,11 @@ class AuthorsViewsTest(TestCase):
     def test_authors_register_create_view_is_ok(self):
         view = resolve(reverse("authors:register_create"))
         self.assertIs(view.func, views.register_create)
+
+    def test_authors_login_view_is_ok(self):
+        view = resolve(reverse("authors:login"))
+        self.assertIs(view.func, views.login_view)
+
+    def test_authors_login_create_view_is_ok(self):
+        view = resolve(reverse("authors:login_create"))
+        self.assertIs(view.func, views.login_create)
