@@ -2,6 +2,8 @@ from django.http import Http404, HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth import authenticate, login
+
 from .forms import RegisterForm, LoginForm
 
 
@@ -33,9 +35,31 @@ def register_create(request: HttpRequest):
 
 def login_view(request):
     form = LoginForm()
-    context = {"form": form}
+    context = {"form": form, "form_action": reverse("authors:login_create")}
     return render(request, "authors/pages/login.html", context)
 
 
 def login_create(request):
-    return render(request, "authors/pages/login.html")
+    if not request.POST:
+        raise Http404()
+
+    form = LoginForm(request.POST)
+    login_url = reverse("authors:login")
+
+    if form.is_valid():
+        authenticated_user = authenticate(
+            request,
+            username=form.cleaned_data.get("username", ""),
+            password=form.cleaned_data.get("password", ""),
+        )
+
+        if authenticated_user is not None:
+            messages.success(request, "Sucessfully logged.")
+            login(request, authenticated_user)
+        else:
+            messages.error(request, "Incorrect password or username.")
+
+    else:
+        messages.error(request, "Error to validate form data.")
+
+    return redirect(login_url)
