@@ -7,7 +7,7 @@
         <h2>Login</h2>
         {% if request.user.is_authenticated %}
             <p>
-                You are logged in with <strong>{{ request.user.username }}</strong>
+                You are logged in with <strong>{{ request.user.username }}</strong>. Logout <a href="{% url "authors:logout" %}">here</a>
             </p>
         {% endif %}
     </div>
