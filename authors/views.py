@@ -69,5 +69,9 @@ def login_create(request):
 
 @login_required(login_url="authors:login", redirect_field_name="next")
 def logout_view(request):
+    if request.method != "POST":
+        print("cu")
+        return redirect("authors:login")
+
     logout(request)
     return redirect("authors:login")
