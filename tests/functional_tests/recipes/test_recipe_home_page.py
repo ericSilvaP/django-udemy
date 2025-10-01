@@ -41,3 +41,20 @@ class RecipesHomePageTest(RecipeBaseFunctionalTest):
         # search recult must appear correctly
         body = self.browser.find_element(By.TAG_NAME, "body").text
         self.assertIn(needed_title, body)
+
+    @patch("recipes.views.PER_PAGE", new=2)
+    def test_recipe_home_makes_correct_pagination_with_2_recipes_per_page(self):
+        self.make_recipes_in_batch(10)
+
+        # user open the browser
+        self.browser.get(self.live_server_url)
+
+        # click in the page 2 button
+        page2 = self.browser.find_element(
+            By.XPATH,
+            '//a[@aria-label="Go to page 2"]',
+        )
+        page2.click()
+
+        # assert 2 recipes in page
+        self.assertEqual(len(self.browser.find_elements(By.CLASS_NAME, "recipe")), 2)
