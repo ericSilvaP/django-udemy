@@ -38,9 +38,10 @@ class RecipesHomePageTest(RecipeBaseFunctionalTest):
         search_input.send_keys(needed_title)
         search_input.send_keys(Keys.ENTER)
 
+        time.sleep(1)
         # search recult must appear correctly
-        body = self.browser.find_element(By.TAG_NAME, "body").text
-        self.assertIn(needed_title, body)
+        body = self.browser.find_element(By.CSS_SELECTOR, ".main-content-container")
+        self.assertIn(needed_title, body.text)
 
     @patch("recipes.views.PER_PAGE", new=2)
     def test_recipe_home_makes_correct_pagination_with_2_recipes_per_page(self):
