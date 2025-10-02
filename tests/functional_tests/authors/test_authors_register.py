@@ -1,9 +1,11 @@
+import pytest
 from .base import AuthorsBaseTest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from parameterized import parameterized
 
 
+@pytest.mark.functional_test
 class AuthorsRegisterTest(AuthorsBaseTest):
     def get_form(self):
         return self.browser.find_element(
