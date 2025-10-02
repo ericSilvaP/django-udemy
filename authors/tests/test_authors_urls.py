@@ -18,3 +18,7 @@ class AuthorsURLsTest(TestCase):
     def test_authors_login_create_url_is_ok(self):
         url = reverse("authors:login_create")
         self.assertEqual(url, "/authors/login/create/")
+
+    def test_authors_logout_url_is_ok(self):
+        url = reverse("authors:logout")
+        self.assertEqual(url, "/authors/logout/")
