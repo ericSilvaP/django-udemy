@@ -20,7 +20,7 @@ class AuthorsViewsTest(TestCase):
         view = resolve(reverse("authors:login_create"))
         self.assertIs(view.func, views.login_create)
 
-    def test_authors_login_create_raises_error_with_get(self):
+    def test_authors_login_create_raises_404_with_get(self):
         url = reverse("authors:login_create")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
