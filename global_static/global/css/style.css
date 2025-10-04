@@ -378,6 +378,11 @@ h6 {
     font-size: 1.6rem;
 }
 
+/* authors */
+.login-message {
+    margin: 1rem 0;
+}
+
 /* Messages */
 .message {
     padding: 1rem;

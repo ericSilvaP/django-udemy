@@ -22,8 +22,6 @@ class AuthorsLoginTest(AuthorsBaseTest):
 
         form.submit()
 
-        form = self.browser.find_element(By.CSS_SELECTOR, ".login-form-container form")
-
         self.assertIn(
             f"You are logged in with {username}",
             self.browser.find_element(By.TAG_NAME, "body").text,
