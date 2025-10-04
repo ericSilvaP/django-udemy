@@ -383,6 +383,32 @@ h6 {
     margin: 1rem 0;
 }
 
+.authors-dashboard-container {
+    max-width: 64rem;
+    padding: var(--spacing-gutter-medium);
+    text-align: left;
+    margin: 0 auto;
+}
+
+.authors-dashboard-container li,
+.authors-dashboard-container a {
+    list-style-type: none;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+.authors-dashboard-container a:hover {
+    color: var(--color-primary-hover);
+}
+
+.authors-dashboard-container ul {
+    margin-top: 1rem;
+}
+
+.authors-dashboard-container li {
+    margin: 0.5rem 0;
+}
+
 /* Messages */
 .message {
     padding: 1rem;

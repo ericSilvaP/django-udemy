@@ -12,6 +12,7 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ["author", "is_published"]
     ordering = ["-id"]
     list_per_page = 10
+    prepopulated_fields = {"slug": ["title"]}
 
 
 admin.site.register(Recipe, RecipeAdmin)
