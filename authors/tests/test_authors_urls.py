@@ -22,3 +22,7 @@ class AuthorsURLsTest(TestCase):
     def test_authors_logout_url_is_ok(self):
         url = reverse("authors:logout")
         self.assertEqual(url, "/authors/logout/")
+
+    def test_authors_recipe_edit_url_is_ok(self):
+        url = reverse("authors:dashboard_recipe_edit", kwargs={"id": 1})
+        self.assertEqual(url, "/authors/dashboard/recipe/1/edit/")
