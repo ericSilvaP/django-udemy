@@ -4,6 +4,9 @@
 {% endblock title %}
 {% block content %}
     <div class="main-content center container">
+        <div class="center back-dashboard">
+            <a href="{% url 'authors:dashboard' %}">Voltar</a>
+        </div>
         <h2>Dashboard Recipe</h2>
         {% include 'global/partials/messages.html' %}
         {% include 'authors/partials/login_logout_message.html' %}

@@ -388,6 +388,10 @@ h6 {
     font-size: 1.6rem;
 }
 
+img {
+    max-width: 100%;
+}
+
 /* authors */
 .login-message {
     margin: 1rem 0;
@@ -401,7 +405,8 @@ h6 {
 }
 
 .authors-dashboard-container li,
-.authors-dashboard-container a {
+.authors-dashboard-container a,
+.back-dashboard a {
     list-style-type: none;
     text-decoration: none;
     color: var(--color-primary);
