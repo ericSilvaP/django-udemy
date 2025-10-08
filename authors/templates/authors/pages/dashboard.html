@@ -6,6 +6,7 @@
     <div class="container center main-content">
         <h2>Dashboard ({{ user }})</h2>
         {% include 'authors/partials/login_logout_message.html' %}
+        {% include 'global/partials/messages.html' %}
         <div class="authors-dashboard-container">
             <h3>Your Recipes</h3>
             <ul>
@@ -15,12 +16,11 @@
                     </li>
                     {% comment %} {% include 'recipes/partials/recipe.html' %} {% endcomment %}
                 {% empty %}
-                    <li>
+                    <li class="no-recipes">
                         <p>You do not have recipes. Create one.</p>
                     </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-    {% include 'global/partials/messages.html' %}
 {% endblock content %}

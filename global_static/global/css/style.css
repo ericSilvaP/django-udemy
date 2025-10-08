@@ -409,6 +409,14 @@ h6 {
     margin: 0.5rem 0;
 }
 
+.authors-dashboard-container h3 {
+    text-align: center;
+}
+
+.no-recipes > p {
+    color: var(--color-dark-text);
+}
+
 /* Messages */
 .message {
     padding: 1rem;

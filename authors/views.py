@@ -79,6 +79,19 @@ def logout_view(request):
 
 @login_required(login_url="authors:login", redirect_field_name="next")
 def dashboard(request):
-    recipes = Recipe.objects.filter(is_published=False)
+    recipes = Recipe.objects.filter(is_published=False, author=request.user).order_by(
+        "-id"
+    )
     context = {"recipes": recipes}
     return render(request, "authors/pages/dashboard.html", context)
+
+
+@login_required(login_url="authors:login", redirect_field_name="next")
+def dashboard_recipe_edit(request, id):
+    recipe = Recipe.objects.get(is_published=False, author=request.user, id=id)
+
+    if not recipe:
+        raise Http404()
+
+    context = {"form": ""}
+    return render(request, "authors/pages/dashboard_recipe_edit.html", context)
