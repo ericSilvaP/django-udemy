@@ -16,3 +16,8 @@ class AuthorsRecipeForm(forms.ModelForm):
             "preparation_steps",
             "cover",
         ]
+
+    preparation_steps = forms.CharField(
+        widget=forms.Textarea(attrs={"class": "span-2"})
+    )
+    cover = forms.ImageField(widget=forms.FileInput(attrs={"class": "span-2"}))

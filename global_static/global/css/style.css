@@ -294,6 +294,10 @@ h6 {
     text-align: center;
 }
 
+.left {
+    text-align: left;
+}
+
 .pagination .pagination-content {
     display: flex;
     gap: 1rem 0.5rem;
@@ -345,7 +349,13 @@ h6 {
     color: var(--color-error-dark);
 }
 
-.form-content input {
+.span-2 {
+    grid-column: span 2;
+}
+
+.form-content input,
+.form-content select,
+.form-content textarea {
     width: 100%;
     padding: 1rem;
     border-radius: 0.4rem;
