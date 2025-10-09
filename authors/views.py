@@ -114,3 +114,32 @@ def dashboard_recipe_edit(request, id):
 
     context = {"form": form}
     return render(request, "authors/pages/dashboard_recipe_edit.html", context)
+
+
+@login_required(login_url="authors:login")
+def create_recipe_view(request):
+    form = AuthorsRecipeForm()
+
+    context = {
+        "form": form,
+        "form_action": reverse("authors:dashboard_create_recipe_view"),
+    }
+
+    return render(request, "authors/pages/dashboard_create_recipe.html", context)
+
+
+@login_required(login_url="authors:login")
+def create_recipe(request):
+    if request.method != "POST":
+        raise Http404()
+
+    form = AuthorsRecipeForm(request.POST, files=request.FILES)
+
+    if form.is_valid():
+        recipe = form.save(commit=False)
+        recipe.author = request.user
+        recipe.save()
+
+        messages.success(request, "Receita criada com sucesso")
+
+    return redirect("authors:dashboard_create_recipe")

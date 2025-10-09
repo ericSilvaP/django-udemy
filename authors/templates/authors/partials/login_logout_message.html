@@ -6,6 +6,7 @@
                 {% csrf_token %}
                 <button type="submit" class="plaintext-button">here</button>
             </form>
+            , create <a href="{% url 'authors:dashboard_create_recipe' %}">new recipe</a> or <a href="{% url 'authors:dashboard' %}">see your recipes</a>.
         </p>
     {% endif %}
 </div>

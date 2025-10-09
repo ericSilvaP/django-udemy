@@ -406,13 +406,14 @@ img {
 
 .authors-dashboard-container li,
 .authors-dashboard-container a,
-.back-dashboard a {
+.login-message a {
     list-style-type: none;
     text-decoration: none;
     color: var(--color-primary);
 }
 
-.authors-dashboard-container a:hover {
+.authors-dashboard-container a:hover,
+.login-message a:hover {
     color: var(--color-primary-hover);
 }
 
