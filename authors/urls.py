@@ -17,12 +17,7 @@ urlpatterns = [
     ),
     path(
         "dashboard/recipe/create/",
-        views.create_recipe_view,
+        views.dashboard_create_recipe,
         name="dashboard_create_recipe",
-    ),
-    path(
-        "dashboard/recipe/create/create/",
-        views.create_recipe,
-        name="dashboard_create_recipe_view",
     ),
 ]

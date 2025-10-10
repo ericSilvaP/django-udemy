@@ -1,3 +1,4 @@
+from random import randint
 from django.http import Http404, HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -117,29 +118,27 @@ def dashboard_recipe_edit(request, id):
 
 
 @login_required(login_url="authors:login")
-def create_recipe_view(request):
-    form = AuthorsRecipeForm()
-
-    context = {
-        "form": form,
-        "form_action": reverse("authors:dashboard_create_recipe_view"),
-    }
-
-    return render(request, "authors/pages/dashboard_create_recipe.html", context)
-
-
-@login_required(login_url="authors:login")
-def create_recipe(request):
-    if request.method != "POST":
-        raise Http404()
-
-    form = AuthorsRecipeForm(request.POST, files=request.FILES)
+def dashboard_create_recipe(request):
+    form = AuthorsRecipeForm(
+        data=request.POST or None,
+        files=request.FILES or None,
+    )
 
     if form.is_valid():
         recipe = form.save(commit=False)
+
         recipe.author = request.user
+
         recipe.save()
 
-        messages.success(request, "Receita criada com sucesso")
+        messages.success(request, "Receita criada com sucesso!")
+        return redirect("authors:dashboard")
 
-    return redirect("authors:dashboard_create_recipe")
+    return render(
+        request,
+        "authors/pages/dashboard_create_recipe.html",
+        context={
+            "form": form,
+            "form_action": reverse("authors:dashboard_create_recipe"),
+        },
+    )
