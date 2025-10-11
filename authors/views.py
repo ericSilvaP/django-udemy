@@ -1,9 +1,10 @@
 from random import randint
 from django.http import Http404, HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
 from authors.forms.recipe_form import AuthorsRecipeForm
@@ -126,9 +127,7 @@ def dashboard_create_recipe(request):
 
     if form.is_valid():
         recipe = form.save(commit=False)
-
         recipe.author = request.user
-
         recipe.save()
 
         messages.success(request, "Receita criada com sucesso!")
@@ -142,3 +141,12 @@ def dashboard_create_recipe(request):
             "form_action": reverse("authors:dashboard_create_recipe"),
         },
     )
+
+
+@require_POST
+@login_required(login_url="authors:login")
+def dashboard_delete_recipe(request, id):
+    recipe = get_object_or_404(Recipe, id=id)
+    recipe.delete()
+    messages.success(request, "Receita apagada com sucesso!")
+    return redirect("authors:dashboard")
