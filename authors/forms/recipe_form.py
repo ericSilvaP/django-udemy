@@ -21,7 +21,9 @@ class AuthorsRecipeForm(forms.ModelForm):
     preparation_steps = forms.CharField(
         widget=forms.Textarea(attrs={"class": "span-2"})
     )
-    cover = forms.ImageField(widget=forms.FileInput(attrs={"class": "span-2"}))
+    cover = forms.ImageField(
+        widget=forms.FileInput(attrs={"class": "span-2"}), required=False
+    )
     servings_unit = forms.ChoiceField(
         choices=(
             ("porções", "Porções"),
