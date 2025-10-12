@@ -1,4 +1,3 @@
-from random import randint
 from django.http import Http404, HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
@@ -10,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from authors.forms.recipe_form import AuthorsRecipeForm
 from recipes.models import Recipe
 
-from .forms import RegisterForm, LoginForm
+from authors.forms import RegisterForm, LoginForm
 
 
 def register_view(request):
