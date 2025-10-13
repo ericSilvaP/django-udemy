@@ -111,7 +111,7 @@ def dashboard_recipe_edit(request, id):
         recipe.save()
 
         messages.success(request, "Sua receita foi salva com sucesso!")
-        redirect(reverse("authors:dashboard_recipe_edit", args=(id,)))
+        return redirect(reverse("authors:dashboard_recipe_edit", args=(id,)))
 
     context = {"form": form}
     return render(request, "authors/pages/dashboard_recipe_edit.html", context)
