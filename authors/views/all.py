@@ -1,13 +1,10 @@
 from django.http import Http404, HttpRequest
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
-from authors.forms.recipe_form import AuthorsRecipeForm
-from recipes.models import Recipe
 
 from authors.forms import RegisterForm, LoginForm
 
@@ -77,21 +74,3 @@ def logout_view(request):
 
     logout(request)
     return redirect("authors:login")
-
-
-@login_required(login_url="authors:login", redirect_field_name="next")
-def dashboard(request):
-    recipes = Recipe.objects.filter(is_published=False, author=request.user).order_by(
-        "-id"
-    )
-    context = {"recipes": recipes}
-    return render(request, "authors/pages/dashboard.html", context)
-
-
-@require_POST
-@login_required(login_url="authors:login")
-def dashboard_delete_recipe(request, id):
-    recipe = get_object_or_404(Recipe, id=id)
-    recipe.delete()
-    messages.success(request, "Receita apagada com sucesso!")
-    return redirect("authors:dashboard")

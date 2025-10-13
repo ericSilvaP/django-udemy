@@ -9,20 +9,20 @@ urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("login/create/", views.login_create, name="login_create"),
     path("logout/", views.logout_view, name="logout"),
-    path("dashboard/", views.dashboard, name="dashboard"),
+    path("dashboard/", views.Dashboard.as_view(), name="dashboard"),
     path(
         "dashboard/recipe/<int:id>/edit/",
-        views.DashboardEditRecipe.as_view(),
+        views.DashboardRecipe.as_view(),
         name="dashboard_recipe_edit",
     ),
     path(
         "dashboard/recipe/create/",
-        views.DashboardEditRecipe.as_view(),
+        views.DashboardRecipe.as_view(),
         name="dashboard_create_recipe",
     ),
     path(
         "dashboard/recipe/delete/<int:id>",
-        views.dashboard_delete_recipe,
+        views.DashboardDeleteRecipe.as_view(),
         name="dashboard_delete_recipe",
     ),
 ]

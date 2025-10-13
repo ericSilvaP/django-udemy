@@ -1,2 +1,2 @@
 from .all import *
-from .dashboard_recipe import DashboardEditRecipe
+from .dashboard_recipe import *
