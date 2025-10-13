@@ -14,18 +14,18 @@ class DashboardEditRecipe(View):
             context={"form": form},
         )
 
-    def get_published_recipe_or_404(self, id):
-        return get_object_or_404(
-            Recipe, is_published=False, author=self.request.user, id=id
-        )
+    def get_published_recipe(self, id):
+        return Recipe.objects.filter(
+            is_published=False, author=self.request.user, id=id
+        ).first()
 
-    def get(self, request, id):
-        recipe = self.get_published_recipe_or_404(id)
+    def get(self, request, id=None):
+        recipe = self.get_published_recipe(id)
         form = AuthorsRecipeForm(instance=recipe)
         return self.render_edit_recipe(form)
 
     def post(self, request, id):
-        recipe = self.get_published_recipe_or_404(id)
+        recipe = self.get_published_recipe(id)
 
         form = AuthorsRecipeForm(
             request.POST or None,
@@ -41,6 +41,6 @@ class DashboardEditRecipe(View):
             recipe.save()
 
             messages.success(request, "Sua receita foi salva com sucesso!")
-            return redirect("authors:dashboard_recipe_edit", id=id)
+            return redirect("authors:dashboard_recipe_edit", id=recipe.id)
 
         return self.render_edit_recipe(form)
