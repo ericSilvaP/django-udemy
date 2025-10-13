@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.views import View
-from django.shortcuts import redirect, get_object_or_404, render
-
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from authors.forms.recipe_form import AuthorsRecipeForm
 from recipes.models import Recipe
 
 
+@method_decorator(login_required(login_url="authors:login"), name="dispatch")
 class DashboardEditRecipe(View):
     def render_edit_recipe(self, form):
         return render(
