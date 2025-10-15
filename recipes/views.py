@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.http import Http404
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.db.models import Q
@@ -86,6 +87,11 @@ class RecipeDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context.update({"is_detail": True})
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_published=True)
+        return queryset
 
 
 def home(request):
