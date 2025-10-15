@@ -35,7 +35,7 @@ class DashboardRecipe(View):
         form = AuthorsRecipeForm(instance=recipe)
         return self.render_edit_recipe(form)
 
-    def post(self, request, id):
+    def post(self, request, id=None):
         recipe = self.get_published_recipe(id)
 
         form = AuthorsRecipeForm(
