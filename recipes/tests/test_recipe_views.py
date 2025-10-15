@@ -9,7 +9,7 @@ class RecipeViewsTest(RecipeTestBase):
     # home
     def test_recipes_home_view_is_ok(self):
         view = resolve(reverse("recipes:home"))
-        assert view.func is views.home
+        assert view.func.view_class is views.RecipeListViewHome
 
     def test_recipes_home_view_status_code_200_OK(self):
         response = self.client.get(reverse("recipes:home"))
@@ -47,7 +47,7 @@ class RecipeViewsTest(RecipeTestBase):
                 kwargs={"category_id": 1000},
             )
         )
-        assert view.func is views.category
+        assert view.func.view_class is views.RecipeListViewCategory
 
     def test_recipes_category_view_404_without_if_no_recipes_found(self):
         response = self.client.get(
@@ -73,7 +73,7 @@ class RecipeViewsTest(RecipeTestBase):
 
         self.assertIn(needed_title, content)
 
-    def test_recipes_category_template_dont_load_unpublished_recipe(self):
+    def test_recipes_category_template_does_not_loads_unpublished_recipe(self):
         recipe = self.make_recipe(is_published=False)
 
         response = self.client.get(
@@ -129,7 +129,7 @@ class RecipeViewsTest(RecipeTestBase):
     # search
     def test_recipes_search_view_is_ok(self):
         view = resolve(reverse("recipes:search"))
-        self.assertIs(view.func, views.search)
+        self.assertIs(view.func.view_class, views.RecipeListViewSearch)
 
     def test_recipes_search_template_loads_recipes(self):
         response = self.client.get(reverse("recipes:search") + "?q=test")
@@ -146,7 +146,7 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipes_search_search_term_is_on_title_and_escaped(self):
         response = self.client.get(f"{reverse("recipes:search")}?q=<test>")
         self.assertIn(
-            "Pesquisa por &lt;test&gt; |",
+            "Pesquisa por &quot;&lt;test&gt;&quot; |",
             response.content.decode(),
         )
 

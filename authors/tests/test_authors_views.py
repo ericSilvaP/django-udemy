@@ -33,7 +33,7 @@ class AuthorsLoginViewsTest(LoginTestBase):
         self.login()
         url = reverse("authors:dashboard_recipe_edit", kwargs={"id": 1})
         view = resolve(url)
-        self.assertIs(view.func, views.dashboard_recipe_edit)
+        self.assertIs(view.func.view_class, views.DashboardRecipe)
 
     def test_authors_recipe_edit_view_raises_404_without_valid_recipe(self):
         self.login()

@@ -45,6 +45,8 @@ class RecipeListViewCategory(RecipeListViewBase):
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(category__id=self.kwargs.get("category_id"))
+        if not queryset:
+            raise Http404()
         return queryset
 
 
@@ -61,10 +63,14 @@ class RecipeListViewSearch(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        search_term = str(self.request.GET.get("q")).strip()
+        search_term = str(self.request.GET.get("q", "")).strip()
+
+        if not search_term:
+            raise Http404()
+
         context.update(
             {
-                "title": f'Pesquisa por "{search_term}" - ',
+                "title": f'Pesquisa por "{search_term}" |',
                 "search_term": search_term,
             }
         )

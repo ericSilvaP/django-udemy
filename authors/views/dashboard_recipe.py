@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import Http404
 from django.views import View
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -32,6 +33,10 @@ class DashboardRecipe(View):
 
     def get(self, request, id=None):
         recipe = self.get_published_recipe(id)
+
+        if id is not None and not recipe:
+            raise Http404()
+
         form = AuthorsRecipeForm(instance=recipe)
         return self.render_edit_recipe(form)
 
