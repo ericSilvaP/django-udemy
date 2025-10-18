@@ -1,7 +1,8 @@
-from django.db.models.query import QuerySet
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.db.models import Q
+from django.forms.models import model_to_dict
 from django.views.generic import ListView, DetailView
 from utils.pagination import make_pagination
 
@@ -38,6 +39,13 @@ class RecipeListViewBase(ListView):
 
 class RecipeListViewHome(RecipeListViewBase):
     template_name = "recipes/pages/home.html"
+
+
+class RecipeListViewHomeApi(RecipeListViewBase):
+    def render_to_response(self, context, **response_kwargs):
+        recipes = context["recipes"]
+        recipes_qs = recipes.object_list.values()
+        return JsonResponse(list(recipes_qs), safe=False)
 
 
 class RecipeListViewCategory(RecipeListViewBase):
@@ -92,6 +100,19 @@ class RecipeDetail(DetailView):
         queryset = super().get_queryset()
         queryset = queryset.filter(is_published=True)
         return queryset
+
+
+class RecipeDetailAPI(RecipeDetail):
+    def render_to_response(self, context, **response_kwargs):
+        recipe = context["recipe"]
+        recipe_dict = model_to_dict(recipe)
+
+        if recipe_dict.get("cover"):
+            recipe_dict["cover"] = recipe_dict["cover"].url
+        else:
+            recipe_dict["cover"] = ""
+
+        return JsonResponse(recipe_dict)
 
 
 def home(request):
