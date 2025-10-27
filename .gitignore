@@ -129,4 +129,5 @@ gunicorn-error-log
 db copy.sqlite3
 gunicorn-error-log
 static/
+staticfiles/
 # static/
